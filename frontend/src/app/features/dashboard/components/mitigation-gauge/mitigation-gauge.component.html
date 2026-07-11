@@ -1,0 +1,33 @@
+<section class="panel" title="Dato simulado (demo)">
+  <h3>Impacto de la mitigación</h3>
+
+  <div class="gauge-row">
+    <div class="gauge">
+      <svg viewBox="0 0 120 68" aria-hidden="true">
+        <defs>
+          <linearGradient id="mitigation-grad" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stop-color="#22c55e" />
+            <stop offset="75%" stop-color="#84cc16" />
+            <stop offset="100%" stop-color="#f59e0b" />
+          </linearGradient>
+        </defs>
+        <path d="M8 60 A52 52 0 0 1 112 60" fill="none" stroke="#232a33" stroke-width="9" stroke-linecap="round" />
+        <path d="M8 60 A52 52 0 0 1 112 60" fill="none" stroke="url(#mitigation-grad)" stroke-width="9"
+              stroke-linecap="round" [attr.stroke-dasharray]="arcDash" />
+      </svg>
+      <div class="gauge-value">{{ mitigation?.reduction_pct ?? 0 | number: '1.0-0' }}%</div>
+      <div class="gauge-caption">Disminución estimada<br>vs. escenario base</div>
+    </div>
+
+    <div class="figures">
+      <div class="figure">
+        <span class="figure-label">Sin mitigación</span>
+        <span class="figure-value">{{ format(mitigation?.without_mitigation) }} µg/m³N</span>
+      </div>
+      <div class="figure">
+        <span class="figure-label">Con mitigación actual</span>
+        <span class="figure-value strong">{{ format(mitigation?.with_mitigation) }} µg/m³N</span>
+      </div>
+    </div>
+  </div>
+</section>

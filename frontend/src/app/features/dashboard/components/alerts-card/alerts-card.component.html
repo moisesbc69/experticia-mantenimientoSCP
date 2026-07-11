@@ -1,0 +1,30 @@
+<section class="panel">
+  <h3>Alertas activas</h3>
+
+  <div class="alert-row">
+    <div class="total-block">
+      <span class="total">{{ alerts?.total ?? 0 }}</span>
+      <span class="total-label">Total alertas</span>
+    </div>
+
+    <ul class="breakdown">
+      <li>
+        <span class="sev-dot critical"></span>
+        <span class="sev-count">{{ alerts?.by_severity?.critica ?? 0 }}</span>
+        Críticas
+      </li>
+      <li>
+        <span class="sev-dot major"></span>
+        <span class="sev-count">{{ alerts?.by_severity?.mayor ?? 0 }}</span>
+        Mayores
+      </li>
+      <li>
+        <span class="sev-dot minor"></span>
+        <span class="sev-count">{{ alerts?.by_severity?.menor ?? 0 }}</span>
+        Menores
+      </li>
+    </ul>
+  </div>
+
+  <button class="see-all" (click)="seeAll()">Ver todas</button>
+</section>

@@ -1,0 +1,140 @@
+@use 'tokens' as *;
+
+.systems-panel {
+  @include panel;
+
+  padding: var(--space-3) var(--space-4);
+
+  h2 {
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: var(--space-2);
+  }
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(8, minmax(0, 1fr));
+  gap: var(--space-3);
+}
+
+.system-card {
+  background: var(--bg-panel-alt);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: var(--space-3);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  cursor: default;
+
+  @include panel-hover;
+
+  &.state-ambar {
+    border-color: rgba(245, 158, 11, 0.45);
+  }
+
+  &.state-rojo {
+    border-color: rgba(239, 68, 68, 0.5);
+  }
+}
+
+.card-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.sys-icon {
+  width: 24px;
+  height: 24px;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  border-radius: 6px;
+  background: var(--blue-soft);
+  color: var(--accent-cyan);
+}
+
+.sys-title {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.25;
+  min-width: 0;
+
+  .sys-index {
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    color: var(--text-dim);
+    text-transform: uppercase;
+  }
+
+  .sys-name {
+    font-size: 10.5px;
+    font-weight: 700;
+    line-height: 1.2;
+  }
+}
+
+.indicator {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 6px;
+
+  .indicator-label {
+    font-size: 10px;
+    color: var(--text-secondary);
+  }
+
+  .indicator-value {
+    font-size: 17px;
+    font-weight: 800;
+  }
+}
+
+.metrics {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.metric {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 7px;
+  font-size: 10.5px;
+
+  .metric-label {
+    color: var(--text-secondary);
+    white-space: nowrap;
+  }
+
+  .spark {
+    height: 20px;
+    min-width: 0;
+  }
+
+  .metric-value {
+    font-weight: 700;
+    white-space: nowrap;
+
+    &.status-green {
+      color: var(--status-green);
+    }
+  }
+}
+
+@media (max-width: 1500px) {
+  .grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 900px) {
+  .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}

@@ -1,0 +1,29 @@
+<section class="panel" title="Dato simulado (demo)">
+  <h3>Condiciones ambientales</h3>
+
+  <div class="env-row">
+    <div class="env-item">
+      <lucide-icon name="thermometer" [size]="18" class="env-icon" />
+      <div class="env-text">
+        <span class="env-value">{{ environment?.temperature_c | number: '1.1-1' }} °C</span>
+        <span class="env-label">Temperatura</span>
+      </div>
+    </div>
+
+    <div class="env-item">
+      <lucide-icon name="droplets" [size]="18" class="env-icon" />
+      <div class="env-text">
+        <span class="env-value">{{ environment?.humidity_pct | number: '1.0-0' }} %</span>
+        <span class="env-label">Humedad</span>
+      </div>
+    </div>
+
+    <div class="env-item">
+      <lucide-icon name="wind" [size]="18" class="env-icon" />
+      <div class="env-text">
+        <span class="env-value">{{ environment?.wind_direction }} {{ environment?.wind_speed_kmh | number: '1.0-0' }} km/h</span>
+        <span class="env-label">Viento</span>
+      </div>
+    </div>
+  </div>
+</section>

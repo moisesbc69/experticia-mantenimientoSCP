@@ -1,0 +1,74 @@
+@use 'tokens' as *;
+
+.panel {
+  @include panel;
+  @include panel-hover;
+
+  padding: var(--space-3) var(--space-4);
+
+  h3 {
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: var(--space-2);
+  }
+}
+
+.gauge-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.gauge {
+  position: relative;
+  flex: 0 0 112px;
+  text-align: center;
+
+  svg {
+    width: 104px;
+  }
+
+  .gauge-value {
+    position: absolute;
+    top: 26px;
+    left: 0;
+    right: 10px;
+    font-size: 17px;
+    font-weight: 800;
+  }
+
+  .gauge-caption {
+    font-size: 9.5px;
+    color: var(--text-secondary);
+    line-height: 1.4;
+    margin-top: 2px;
+  }
+}
+
+.figures {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  min-width: 0;
+}
+
+.figure {
+  display: flex;
+  flex-direction: column;
+
+  .figure-label {
+    font-size: 10.5px;
+    color: var(--text-secondary);
+  }
+
+  .figure-value {
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--text-secondary);
+
+    &.strong {
+      color: var(--text-primary);
+      font-weight: 800;
+    }
+  }
+}

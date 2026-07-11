@@ -1,0 +1,48 @@
+<section class="panel">
+  <div class="panel-head">
+    <h3>Emisión de material particulado (PM10)</h3>
+  </div>
+
+  <div class="tabs">
+    @for (tab of tabs; track tab.key) {
+      <button class="tab" [class.active]="range() === tab.key" (click)="setRange(tab.key)">
+        {{ tab.label }}
+      </button>
+    }
+  </div>
+
+  @if (kpi) {
+    <div class="value-block">
+      <span class="big-value">{{ kpi.value }}</span>
+      <span class="unit">{{ kpi.unit }}</span>
+    </div>
+    <div class="value-sub">
+      <span>Promedio planta</span>
+      @if (kpi.delta) {
+        <span class="delta" [class.good]="kpi.delta_positive">
+          {{ kpi.direction === 'down' ? '↓' : '↑' }} {{ kpi.delta }} vs. ayer
+        </span>
+      }
+    </div>
+  }
+
+  <div class="chart-wrap pm10-chart">
+    <ngx-charts-line-chart
+      [results]="chartData()"
+      [scheme]="colorScheme"
+      [xAxis]="true"
+      [yAxis]="true"
+      [showXAxisLabel]="false"
+      [showYAxisLabel]="false"
+      [autoScale]="false"
+      [roundDomains]="true"
+      [animations]="true"
+      [legend]="false"
+    />
+  </div>
+
+  <div class="chart-legend">
+    <span class="item"><span class="swatch solid"></span> Promedio planta</span>
+    <span class="item"><span class="swatch dashed"></span> {{ comparisonLabel() }}</span>
+  </div>
+</section>

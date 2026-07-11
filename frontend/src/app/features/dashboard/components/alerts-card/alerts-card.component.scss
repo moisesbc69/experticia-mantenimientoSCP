@@ -1,0 +1,91 @@
+@use 'tokens' as *;
+
+.panel {
+  @include panel;
+  @include panel-hover;
+
+  padding: var(--space-3) var(--space-4);
+
+  h3 {
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: var(--space-2);
+  }
+}
+
+.alert-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.total-block {
+  display: flex;
+  flex-direction: column;
+
+  .total {
+    font-size: 24px;
+    font-weight: 800;
+    line-height: 1.1;
+  }
+
+  .total-label {
+    font-size: 11px;
+    color: var(--text-secondary);
+  }
+}
+
+.breakdown {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 12px;
+  color: var(--text-secondary);
+
+  li {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .sev-dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 3px;
+
+    &.critical {
+      background: var(--status-red);
+    }
+
+    &.major {
+      background: var(--status-amber);
+    }
+
+    &.minor {
+      background: var(--accent-blue);
+    }
+  }
+
+  .sev-count {
+    font-weight: 800;
+    color: var(--text-primary);
+    min-width: 14px;
+  }
+}
+
+.see-all {
+  margin-top: var(--space-2);
+  background: var(--bg-panel-alt);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
+  font-size: 12px;
+  font-weight: 600;
+  padding: 5px 13px;
+
+  &:hover {
+    border-color: var(--border-strong);
+    background: var(--bg-hover);
+  }
+}

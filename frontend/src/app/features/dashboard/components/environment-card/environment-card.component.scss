@@ -1,0 +1,49 @@
+@use 'tokens' as *;
+
+.panel {
+  @include panel;
+  @include panel-hover;
+
+  padding: var(--space-3) var(--space-4);
+
+  h3 {
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: var(--space-2);
+  }
+}
+
+.env-row {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.env-item {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  min-width: 0;
+}
+
+.env-icon {
+  color: var(--accent-cyan);
+  flex-shrink: 0;
+}
+
+.env-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.3;
+
+  .env-value {
+    font-size: 13px;
+    font-weight: 700;
+    white-space: nowrap;
+  }
+
+  .env-label {
+    font-size: 10.5px;
+    color: var(--text-secondary);
+  }
+}

@@ -1,0 +1,42 @@
+<section class="systems-panel">
+  <h2>Estado de sistemas de supresión y colección</h2>
+
+  <div class="grid">
+    @for (system of systems; track system.id; let i = $index) {
+      <div class="system-card" [class]="'state-' + system.estado_semaforo" [title]="tooltipFor(system)">
+        <div class="card-head">
+          <span class="sys-icon">
+            <lucide-icon [name]="iconFor(system)" [size]="14" />
+          </span>
+          <span class="sys-title">
+            <span class="sys-index">Sistema {{ i + 1 }}</span>
+            <span class="sys-name">{{ system.name }}</span>
+          </span>
+        </div>
+
+        <div class="indicator">
+          <span class="indicator-label">{{ system.indicator_label }}</span>
+          <span class="indicator-value" [style.color]="colorFor(system.estado_semaforo)">
+            {{ system.disponibilidad }}%
+          </span>
+        </div>
+
+        <div class="metrics">
+          @for (metric of system.metrics; track metric.label) {
+            <div class="metric">
+              <span class="metric-label">{{ metric.label }}</span>
+              @if (metric.sparkline.length) {
+                <span class="spark">
+                  <app-sparkline [values]="metric.sparkline" [color]="colorFor(system.estado_semaforo)" />
+                </span>
+              }
+              <span class="metric-value" [class.status-green]="metric.value === 'Operativo'">
+                {{ metric.value }} {{ metric.unit }}
+              </span>
+            </div>
+          }
+        </div>
+      </div>
+    }
+  </div>
+</section>

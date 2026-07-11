@@ -1,0 +1,66 @@
+<header class="header">
+  <div class="brand">
+    <span class="brand-mark">E</span>
+    <span class="brand-name">EXPERTICIA</span>
+  </div>
+
+  <div class="plant-selector" [class.open]="dropdownOpen()">
+    <button class="selector-btn" (click)="toggleDropdown()">
+      <lucide-icon name="search" [size]="15" class="icon-dim" />
+      <span class="plant-name">{{ plant?.name ?? 'Seleccionar planta' }}</span>
+      <span class="status-pill" [class.warn]="!statusOk">{{ plant?.general_status ?? '—' }}</span>
+      <lucide-icon name="chevron-down" [size]="15" class="icon-dim chevron" />
+    </button>
+
+    @if (dropdownOpen()) {
+      <div class="dropdown">
+        @for (p of plants; track p.id) {
+          <button class="dropdown-item" [class.active]="p.id === selectedPlantId" (click)="pickPlant(p)">
+            <span>{{ p.name }}</span>
+            <span class="mini-status" [class.warn]="!p.general_status.toLowerCase().includes('normal')">
+              {{ p.general_status }}
+            </span>
+          </button>
+        }
+      </div>
+    }
+  </div>
+
+  <div class="spacer"></div>
+
+  <button class="header-item alerts" (click)="decorative()">
+    <span class="bell-wrap">
+      <lucide-icon name="bell" [size]="17" />
+      <span class="badge">{{ alertsTotal }}</span>
+    </span>
+    <span class="label">Alertas</span>
+  </button>
+
+  <button class="header-item" title="Tema" (click)="decorative()">
+    <lucide-icon name="sun-medium" [size]="17" />
+  </button>
+
+  <button class="header-item" (click)="decorative()">
+    <lucide-icon name="globe" [size]="16" />
+    <span class="label">ES</span>
+  </button>
+
+  <div class="user">
+    <span class="avatar">JP</span>
+    <span class="user-info">
+      <span class="user-name">Joan Pérez</span>
+      <span class="user-role">Administrador</span>
+    </span>
+    <lucide-icon name="chevron-down" [size]="14" class="icon-dim" />
+  </div>
+
+  <div class="client-logo" [title]="plant?.client">
+    <span class="client-dot"></span>
+    <span class="client-name">{{ plant?.client ?? '' }}</span>
+  </div>
+</header>
+
+<div class="subheader">
+  <span class="clock">{{ clock() }}</span>
+  <span class="realtime">Tiempo real <span class="pulse"></span></span>
+</div>
