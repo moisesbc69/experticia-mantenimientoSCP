@@ -7,15 +7,15 @@
   <div class="plant-selector" [class.open]="dropdownOpen()">
     <button class="selector-btn" (click)="toggleDropdown()">
       <lucide-icon name="search" [size]="15" class="icon-dim" />
-      <span class="plant-name">{{ plant?.name ?? 'Seleccionar planta' }}</span>
-      <span class="status-pill" [class.warn]="!statusOk">{{ plant?.general_status ?? '—' }}</span>
+      <span class="plant-name">{{ state.plant()?.name ?? 'Seleccionar planta' }}</span>
+      <span class="status-pill" [class.warn]="!statusOk">{{ state.plant()?.general_status ?? '—' }}</span>
       <lucide-icon name="chevron-down" [size]="15" class="icon-dim chevron" />
     </button>
 
     @if (dropdownOpen()) {
       <div class="dropdown">
-        @for (p of plants; track p.id) {
-          <button class="dropdown-item" [class.active]="p.id === selectedPlantId" (click)="pickPlant(p)">
+        @for (p of state.plants(); track p.id) {
+          <button class="dropdown-item" [class.active]="p.id === state.selectedPlantId()" (click)="pickPlant(p)">
             <span>{{ p.name }}</span>
             <span class="mini-status" [class.warn]="!p.general_status.toLowerCase().includes('normal')">
               {{ p.general_status }}
@@ -28,10 +28,12 @@
 
   <div class="spacer"></div>
 
-  <button class="header-item alerts" (click)="decorative()">
+  <button class="header-item alerts" (click)="goAlertas()">
     <span class="bell-wrap">
       <lucide-icon name="bell" [size]="17" />
-      <span class="badge">{{ alertsTotal }}</span>
+      @if (state.alertsTotal() > 0) {
+        <span class="badge">{{ state.alertsTotal() }}</span>
+      }
     </span>
     <span class="label">Alertas</span>
   </button>
@@ -54,9 +56,12 @@
     <lucide-icon name="chevron-down" [size]="14" class="icon-dim" />
   </div>
 
-  <div class="client-logo" [title]="plant?.client">
-    <span class="client-dot"></span>
-    <span class="client-name">{{ plant?.client ?? '' }}</span>
+  <div class="client-logo" [title]="state.plant()?.client">
+    <span class="bhp-mark">bhp</span>
+    <span class="client-site">
+      <span class="site-name">Spence</span>
+      <span class="site-sub">Pampa Norte</span>
+    </span>
   </div>
 </header>
 

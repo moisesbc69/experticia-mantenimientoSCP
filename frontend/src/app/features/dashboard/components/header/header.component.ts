@@ -1,8 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, inject, signal } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject, signal } from '@angular/core';
+import { Router } from '@angular/router';
 
 import { LucideIcons } from '../../../../core/icons';
 import { Plant } from '../../../../core/models/dashboard.models';
+import { DashboardStateService } from '../../../../core/services/dashboard-state.service';
 import { ToastService } from '../../../../core/services/toast.service';
 
 const MONTHS_ES = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'];
@@ -15,13 +17,10 @@ const MONTHS_ES = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep'
   styleUrl: './header.component.scss',
 })
 export class HeaderComponent implements OnInit, OnDestroy {
-  @Input() plants: Plant[] = [];
-  @Input() selectedPlantId: number | null = null;
-  @Input() plant: Plant | null = null;
-  @Input() alertsTotal = 0;
-  @Output() plantChange = new EventEmitter<number>();
-
+  readonly state = inject(DashboardStateService);
   private toast = inject(ToastService);
+  private router = inject(Router);
+
   readonly clock = signal('');
   readonly dropdownOpen = signal(false);
   private timer: ReturnType<typeof setInterval> | null = null;
@@ -52,13 +51,17 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   pickPlant(plant: Plant): void {
     this.dropdownOpen.set(false);
-    if (plant.id !== this.selectedPlantId) {
-      this.plantChange.emit(plant.id);
+    if (plant.id !== this.state.selectedPlantId()) {
+      this.state.selectPlant(plant.id);
     }
   }
 
   get statusOk(): boolean {
-    return (this.plant?.general_status ?? '').toLowerCase().includes('normal');
+    return (this.state.plant()?.general_status ?? '').toLowerCase().includes('normal');
+  }
+
+  goAlertas(): void {
+    this.router.navigate(['/alertas']);
   }
 
   decorative(): void {

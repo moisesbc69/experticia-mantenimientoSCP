@@ -6,28 +6,45 @@
         <lucide-icon name="map" [size]="14" />
         Ver en mapa
       </button>
-      <button class="ghost-btn" (click)="decorative()">
-        <lucide-icon name="layers" [size]="14" />
-        Capas
-        <lucide-icon name="chevron-down" [size]="13" />
-      </button>
+      <div class="layers-wrap">
+        <button class="ghost-btn" [class.active]="layersOpen()" (click)="toggleLayers()">
+          <lucide-icon name="layers" [size]="14" />
+          Capas
+          <lucide-icon name="chevron-down" [size]="13" />
+        </button>
+        @if (layersOpen()) {
+          <div class="layers-panel">
+            <label><input type="checkbox" [checked]="showPm10()" (change)="showPm10.set(!showPm10())" /> Emisión PM10</label>
+            <label><input type="checkbox" [checked]="showSuppression()" (change)="showSuppression.set(!showSuppression())" /> Sistema de supresión</label>
+            <label><input type="checkbox" [checked]="showSensors()" (change)="showSensors.set(!showSensors())" /> Sensores de polvo</label>
+          </div>
+        }
+      </div>
     </div>
   </div>
 
   <div class="diagram">
     <div class="nodes">
       <!-- Línea punteada azul: sistema de supresión -->
-      <div class="suppression-line"></div>
+      @if (showSuppression()) {
+        <div class="suppression-line"></div>
+      }
       @for (point of points; track point.id; let last = $last) {
-        <div class="node" [title]="tooltipFor(point)">
+        <div class="node clickable" [title]="tooltipFor(point)" (click)="openPoint(point)">
+          @if (showPm10()) {
           <div class="pm-badge" [class]="'level-' + pm10Level(point.pm10)">
             <span class="pm-tag">PM10</span>
             <span class="pm-value">{{ point.pm10 }}</span>
             <span class="pm-unit">µg/m³N</span>
           </div>
+          } @else {
+            <div class="pm-badge-spacer"></div>
+          }
 
-          @if (point.has_sensor) {
+          @if (point.has_sensor && showSensors()) {
             <span class="sensor-dot"></span>
+          } @else {
+            <span class="sensor-dot hidden-dot"></span>
           }
 
           <div class="node-icon">

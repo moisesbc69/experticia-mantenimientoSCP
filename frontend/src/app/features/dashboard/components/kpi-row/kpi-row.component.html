@@ -1,6 +1,6 @@
 <div class="kpi-row">
   @for (kpi of kpis; track kpi.key) {
-    <div class="kpi-card" [title]="kpi.simulated ? 'Dato simulado (demo)' : 'Dato real / derivable'">
+    <button class="kpi-card" [title]="kpi.simulated ? 'Dato simulado (demo) — clic para ver detalle' : 'Clic para ver detalle'" (click)="onKpiClick(kpi)">
       <div class="kpi-head">
         <span class="kpi-icon" [class.status-ok]="isStatusCard(kpi) && statusOk(kpi)">
           <lucide-icon [name]="iconFor(kpi)" [size]="16" />
@@ -25,6 +25,6 @@
         </div>
         <div class="kpi-comparison">{{ kpi.comparison }}</div>
       }
-    </div>
+    </button>
   }
 </div>

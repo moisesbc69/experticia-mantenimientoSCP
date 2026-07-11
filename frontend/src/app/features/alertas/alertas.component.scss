@@ -1,0 +1,45 @@
+@use 'tokens' as *;
+
+.alert-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.alert-row {
+  @include panel;
+  @include panel-hover;
+
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+}
+
+.sev-indicator {
+  width: 4px;
+  align-self: stretch;
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
+.alert-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.alert-message {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.alert-meta {
+  font-size: 11px;
+  color: var(--text-secondary);
+  margin-top: 2px;
+
+  .dot-sep {
+    margin: 0 5px;
+    color: var(--text-dim);
+  }
+}

@@ -1,0 +1,50 @@
+@if (drawer.content(); as c) {
+  <div class="backdrop" (click)="drawer.close()"></div>
+  <aside class="drawer">
+    <header class="drawer-head">
+      <div>
+        <h2>{{ c.title }}</h2>
+        @if (c.subtitle) {
+          <p class="subtitle">{{ c.subtitle }}</p>
+        }
+      </div>
+      <div class="head-right">
+        @if (c.badge) {
+          <span class="badge" [style.color]="c.badge.color" [style.borderColor]="c.badge.color">
+            {{ c.badge.text }}
+          </span>
+        }
+        <button class="close" (click)="drawer.close()" aria-label="Cerrar">✕</button>
+      </div>
+    </header>
+
+    <div class="rows">
+      @for (row of c.rows; track row.label) {
+        <div class="row">
+          <span class="row-label">{{ row.label }}</span>
+          <span class="row-value" [style.color]="row.color ?? null">{{ row.value }}</span>
+        </div>
+      }
+    </div>
+
+    @if (c.sparks?.length) {
+      <div class="sparks">
+        @for (spark of c.sparks; track spark.label) {
+          <div class="spark-block">
+            <div class="spark-head">
+              <span>{{ spark.label }}</span>
+              <span class="spark-last">{{ spark.values.at(-1) }} {{ spark.suffix }}</span>
+            </div>
+            <div class="spark-chart">
+              <app-sparkline [values]="spark.values" [color]="spark.color" />
+            </div>
+          </div>
+        }
+      </div>
+    }
+
+    @if (c.note) {
+      <p class="note">ⓘ {{ c.note }}</p>
+    }
+  </aside>
+}

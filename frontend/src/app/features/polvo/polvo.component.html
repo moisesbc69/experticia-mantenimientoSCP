@@ -1,0 +1,58 @@
+<div class="page">
+  <div class="page-head">
+    <h1>Polvo (PM10) — emisión de material particulado</h1>
+    <span class="page-sub">Proxy de exposición a sílice · valores normalizados a 25 °C y 1 atm · SIMULADO (demo)</span>
+  </div>
+
+  <section class="chart-panel">
+    <div class="panel-top">
+      <div>
+        <div class="big-value">
+          {{ state.data()?.kpis?.[0]?.value }} <span class="unit">µg/m³N</span>
+        </div>
+        <div class="value-sub">Promedio planta · {{ state.plant()?.name }}</div>
+      </div>
+      <div class="tabs">
+        @for (tab of tabs; track tab.key) {
+          <button class="chip" [class.active]="range() === tab.key" (click)="range.set(tab.key)">
+            {{ tab.label }}
+          </button>
+        }
+      </div>
+    </div>
+
+    <div class="chart-wrap pm10-chart">
+      <ngx-charts-line-chart
+        [results]="chartData()"
+        [scheme]="colorScheme"
+        [xAxis]="true"
+        [yAxis]="true"
+        [roundDomains]="true"
+        [animations]="true"
+        [legend]="false"
+      />
+    </div>
+
+    <div class="chart-legend">
+      <span class="item"><span class="swatch solid"></span> Promedio planta</span>
+      <span class="item"><span class="swatch dashed"></span> {{ range() === 'hoy' ? 'Ayer' : 'Periodo anterior' }}</span>
+    </div>
+  </section>
+
+  <section class="points-panel">
+    <h2>Emisión por punto de monitoreo</h2>
+    <div class="bars">
+      @for (point of sortedPoints(); track point.id) {
+        <button class="bar-row" (click)="open(point)" title="Clic para ver detalle">
+          <span class="bar-label">
+            {{ point.order.toString().padStart(2, '0') }} · {{ point.name }}
+          </span>
+          <span class="bar-track">
+            <span class="bar-fill" [style.width]="barWidth(point)" [style.background]="barColor(point)"></span>
+          </span>
+          <span class="bar-value" [style.color]="barColor(point)">{{ point.pm10 }} µg/m³N</span>
+        </button>
+      }
+    </div>
+  </section>
+</div>

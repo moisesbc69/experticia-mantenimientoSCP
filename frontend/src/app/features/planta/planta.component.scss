@@ -1,0 +1,108 @@
+@use 'tokens' as *;
+
+.areas {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: var(--space-4);
+}
+
+.area-card {
+  @include panel;
+  @include panel-hover;
+
+  padding: var(--space-4);
+}
+
+.area-head {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin-bottom: var(--space-3);
+  color: var(--accent-cyan);
+
+  h2 {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text-primary);
+  }
+
+  .area-meta {
+    margin-left: auto;
+    font-size: 11px;
+    color: var(--text-dim);
+  }
+}
+
+.block-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  margin: var(--space-3) 0 var(--space-2);
+}
+
+.point-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.point-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  background: var(--bg-panel-alt);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
+  padding: 8px 12px;
+  font-size: 12.5px;
+  text-align: left;
+
+  &:hover {
+    border-color: var(--border-strong);
+    background: var(--bg-hover);
+  }
+
+  .point-order {
+    flex-shrink: 0;
+    min-width: 24px;
+    font-size: 10.5px;
+    font-weight: 700;
+    color: var(--accent-blue);
+
+    &.sys {
+      min-width: 0;
+      max-width: 90px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      color: var(--text-dim);
+    }
+  }
+
+  .point-name {
+    flex: 1;
+    font-weight: 600;
+  }
+
+  .sensor {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--status-green);
+    box-shadow: 0 0 6px rgba(34, 197, 94, 0.7);
+  }
+
+  .point-pm10 {
+    font-weight: 800;
+    white-space: nowrap;
+
+    small {
+      font-weight: 500;
+      color: var(--text-dim);
+    }
+  }
+}

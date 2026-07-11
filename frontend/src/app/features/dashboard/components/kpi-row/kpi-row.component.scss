@@ -11,6 +11,10 @@
   @include panel-hover;
 
   padding: 10px var(--space-4);
+  cursor: pointer;
+  color: inherit;
+  font-family: inherit;
+  text-align: left;
   display: flex;
   flex-direction: column;
   gap: 5px;

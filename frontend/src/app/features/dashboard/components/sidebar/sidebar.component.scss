@@ -45,6 +45,12 @@
   font-size: 13px;
   font-weight: 500;
   text-align: left;
+  text-decoration: none;
+  cursor: pointer;
+
+  &.open .expand {
+    transform: rotate(180deg);
+  }
 
   &:hover {
     background: var(--bg-hover);
@@ -72,6 +78,33 @@
 
   .expand {
     color: var(--text-dim);
+    transition: transform 0.15s ease;
+  }
+}
+
+.subnav {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  margin: 2px 0 4px;
+  padding-left: 30px;
+}
+
+.subnav-item {
+  padding: 6px var(--space-3);
+  border-radius: var(--radius-sm);
+  color: var(--text-dim);
+  font-size: 12px;
+  text-decoration: none;
+
+  &:hover {
+    background: var(--bg-hover);
+    color: var(--text-primary);
+  }
+
+  &.active {
+    color: var(--accent-blue);
+    font-weight: 600;
   }
 }
 

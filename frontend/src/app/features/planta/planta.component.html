@@ -1,0 +1,59 @@
+<div class="page">
+  <div class="page-head">
+    <h1>Planta — áreas y puntos de proceso</h1>
+    <span class="page-sub">{{ state.plant()?.name }} · {{ state.plant()?.client }}</span>
+  </div>
+
+  @if (state.data()) {
+    <div class="areas">
+      @for (area of areas(); track area.name) {
+        <section class="area-card">
+          <header class="area-head">
+            <lucide-icon name="boxes" [size]="16" />
+            <h2>{{ area.name }}</h2>
+            <span class="area-meta">
+              {{ area.points.length }} puntos · {{ area.systems.length }} sistemas
+            </span>
+          </header>
+
+          @if (area.points.length) {
+            <div class="block-label">Puntos de proceso</div>
+            <div class="point-list">
+              @for (point of area.points; track point.id) {
+                <button class="point-row" (click)="openPoint(point)">
+                  <span class="point-order">{{ point.order.toString().padStart(2, '0') }}</span>
+                  <span class="point-name">{{ point.name }}</span>
+                  @if (point.has_sensor) {
+                    <span class="sensor" title="Sensor de polvo en línea"></span>
+                  }
+                  <span class="point-pm10" [style.color]="pm10Color(point.pm10)">
+                    {{ point.pm10 }} <small>µg/m³N</small>
+                  </span>
+                </button>
+              }
+            </div>
+          }
+
+          @if (area.systems.length) {
+            <div class="block-label">Sistemas</div>
+            <div class="point-list">
+              @for (system of area.systems; track system.id) {
+                <button class="point-row" (click)="openSystem(system)">
+                  <span class="point-order sys">{{ system.tag }}</span>
+                  <span class="point-name">{{ system.name }}</span>
+                  <span class="point-pm10" [style.color]="semColor(system.estado_semaforo)">
+                    {{ system.disponibilidad }}%
+                  </span>
+                </button>
+              }
+            </div>
+          }
+        </section>
+      }
+    </div>
+
+    <p class="sim-note">ⓘ Los valores PM10 por punto son simulados (demo). Jerarquía y sistemas provienen del catastro real.</p>
+  } @else {
+    <p class="sim-note">Cargando…</p>
+  }
+</div>

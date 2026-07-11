@@ -1,0 +1,37 @@
+<div class="page">
+  <div class="page-head">
+    <h1>Alertas activas</h1>
+    <span class="page-sub">{{ state.data()?.alerts?.total ?? 0 }} alertas · {{ state.plant()?.name }}</span>
+  </div>
+
+  <div class="chip-row">
+    @for (f of filters; track f.key) {
+      <button class="chip" [class.active]="filter() === f.key" (click)="filter.set(f.key)">
+        {{ f.label }}<span class="chip-count">{{ count(f.key) }}</span>
+      </button>
+    }
+  </div>
+
+  <div class="alert-list">
+    @for (alert of filtered(); track alert.id) {
+      <div class="alert-row">
+        <span class="sev-indicator" [style.background]="sevColor(alert.severity)"></span>
+        <div class="alert-body">
+          <div class="alert-message">{{ alert.message }}</div>
+          <div class="alert-meta">
+            @if (alert.system) {
+              <span>{{ alert.system }}</span>
+              <span class="dot-sep">·</span>
+            }
+            <span>{{ alert.timestamp | date: "d MMM, HH:mm 'h'" }}</span>
+          </div>
+        </div>
+        <span class="state-chip" [style.color]="sevColor(alert.severity)" [style.borderColor]="sevColor(alert.severity)">
+          <span class="state-dot"></span>{{ alert.severity_display }}
+        </span>
+      </div>
+    } @empty {
+      <p class="sim-note">No hay alertas para este filtro.</p>
+    }
+  </div>
+</div>

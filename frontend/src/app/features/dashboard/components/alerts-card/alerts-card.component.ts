@@ -1,9 +1,9 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, inject } from '@angular/core';
+import { Router } from '@angular/router';
 
 import { LucideIcons } from '../../../../core/icons';
 import { AlertsBlock } from '../../../../core/models/dashboard.models';
-import { ToastService } from '../../../../core/services/toast.service';
 
 @Component({
   selector: 'app-alerts-card',
@@ -15,9 +15,9 @@ import { ToastService } from '../../../../core/services/toast.service';
 export class AlertsCardComponent {
   @Input() alerts: AlertsBlock | null = null;
 
-  private toast = inject(ToastService);
+  private router = inject(Router);
 
   seeAll(): void {
-    this.toast.show('Próximamente');
+    this.router.navigate(['/alertas']);
   }
 }

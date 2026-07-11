@@ -1,0 +1,84 @@
+@use 'tokens' as *;
+
+.config-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: var(--space-4);
+}
+
+.config-card {
+  @include panel;
+
+  padding: var(--space-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+
+  h2 {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13.5px;
+    font-weight: 700;
+    color: var(--accent-cyan);
+  }
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+
+  span {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-secondary);
+  }
+
+  input,
+  select {
+    background: var(--bg-panel-alt);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    color: var(--text-primary);
+    font-family: inherit;
+    font-size: 13px;
+    padding: 8px 12px;
+
+    &:focus {
+      outline: none;
+      border-color: var(--accent-blue);
+    }
+  }
+
+  small {
+    font-size: 10.5px;
+    color: var(--text-dim);
+    line-height: 1.5;
+
+    code {
+      color: var(--accent-cyan);
+    }
+  }
+
+  .static-value {
+    font-size: 13px;
+    font-weight: 700;
+    padding: 8px 0;
+  }
+}
+
+.save-btn {
+  align-self: flex-start;
+  background: var(--accent-blue);
+  border: none;
+  border-radius: var(--radius-sm);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 10px 22px;
+
+  &:hover {
+    filter: brightness(1.12);
+  }
+}

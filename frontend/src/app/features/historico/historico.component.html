@@ -1,0 +1,50 @@
+<div class="page">
+  <div class="page-head">
+    <h1>Histórico</h1>
+    <span class="page-sub">Tendencia PM10 y registro de eventos · {{ state.plant()?.name }}</span>
+  </div>
+
+  <section class="chart-panel">
+    <div class="panel-top">
+      <h2>Tendencia de emisión PM10 <span class="sim-inline">(SIMULADO)</span></h2>
+      <div class="chip-row">
+        <button class="chip" [class.active]="range() === '7d'" (click)="range.set('7d')">7 días</button>
+        <button class="chip" [class.active]="range() === '30d'" (click)="range.set('30d')">30 días</button>
+      </div>
+    </div>
+    <div class="chart-wrap pm10-chart">
+      <ngx-charts-line-chart
+        [results]="chartData()"
+        [scheme]="colorScheme"
+        [xAxis]="true"
+        [yAxis]="true"
+        [roundDomains]="true"
+        [animations]="true"
+        [legend]="false"
+      />
+    </div>
+  </section>
+
+  <section class="events-panel">
+    <h2>Registro de eventos</h2>
+    <div class="timeline">
+      @for (event of events(); track event.id) {
+        <div class="event-row">
+          <span class="event-dot" [style.background]="sevColor(event.severity)"></span>
+          <div class="event-body">
+            <div class="event-message">{{ event.message }}</div>
+            <div class="event-meta">
+              {{ event.severity_display }}
+              @if (event.system) {
+                · {{ event.system }}
+              }
+              · {{ event.timestamp | date: "d MMM y, HH:mm 'h'" }}
+            </div>
+          </div>
+        </div>
+      } @empty {
+        <p class="sim-note">Sin eventos registrados.</p>
+      }
+    </div>
+  </section>
+</div>

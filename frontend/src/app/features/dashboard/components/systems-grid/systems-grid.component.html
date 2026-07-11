@@ -3,7 +3,7 @@
 
   <div class="grid">
     @for (system of systems; track system.id; let i = $index) {
-      <div class="system-card" [class]="'state-' + system.estado_semaforo" [title]="tooltipFor(system)">
+      <div class="system-card clickable" [class]="'state-' + system.estado_semaforo" [title]="tooltipFor(system)" (click)="openSystem(system)">
         <div class="card-head">
           <span class="sys-icon">
             <lucide-icon [name]="iconFor(system)" [size]="14" />

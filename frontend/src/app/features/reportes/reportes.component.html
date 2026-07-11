@@ -1,0 +1,27 @@
+<div class="page">
+  <div class="page-head">
+    <h1>Reportes</h1>
+    <span class="page-sub">{{ state.plant()?.name }} · exporta los datos del panel en CSV</span>
+  </div>
+
+  <div class="report-grid">
+    @for (report of reports; track report.key) {
+      <section class="report-card">
+        <span class="report-icon">
+          <lucide-icon [name]="report.icon" [size]="20" />
+        </span>
+        <h2>{{ report.title }}</h2>
+        <p>{{ report.description }}</p>
+        @if (report.simulated) {
+          <span class="sim-tag">Datos simulados (demo)</span>
+        }
+        <button class="download-btn" (click)="download(report)">
+          <lucide-icon name="file-text" [size]="14" />
+          Descargar CSV
+        </button>
+      </section>
+    }
+  </div>
+
+  <p class="sim-note">ⓘ Los reportes se generan con los datos actualmente cargados de la planta seleccionada.</p>
+</div>

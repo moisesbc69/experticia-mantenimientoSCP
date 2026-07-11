@@ -1,45 +1,23 @@
-<div class="shell">
-  <app-sidebar [alertsTotal]="data()?.alerts?.total ?? 0" />
+@if (state.data(); as d) {
+  <main class="content" [class.dimmed]="state.loading()">
+    <app-kpi-row [kpis]="d.kpis" />
 
-  <div class="main">
-    <app-header
-      [plants]="plants()"
-      [selectedPlantId]="selectedPlantId()"
-      [plant]="data()?.plant ?? null"
-      [alertsTotal]="data()?.alerts?.total ?? 0"
-      (plantChange)="selectPlant($event)"
-    />
+    <div class="middle">
+      <div class="left-col">
+        <app-process-flow class="flow" id="flujo" [points]="d.process_points" [systems]="d.systems" />
+        <app-systems-grid [systems]="d.systems" />
+      </div>
 
-    @if (error()) {
-      <div class="error-banner">{{ error() }}</div>
-    }
+      <div class="right-col">
+        <app-pm10-panel [series]="d.pm10_series" [kpi]="d.kpis[0]" />
+        <app-mitigation-gauge [mitigation]="d.mitigation" />
+        <app-environment-card [environment]="d.environment" />
+        <app-alerts-card [alerts]="d.alerts" />
+      </div>
+    </div>
 
-    @if (data(); as d) {
-      <main class="content" [class.dimmed]="loading()">
-        <app-kpi-row [kpis]="d.kpis" />
-
-        <div class="middle">
-          <div class="left-col">
-            <app-process-flow class="flow" [points]="d.process_points" [systems]="d.systems" />
-            <app-systems-grid [systems]="d.systems" />
-          </div>
-
-          <div class="right-col">
-            <app-pm10-panel [series]="d.pm10_series" [kpi]="d.kpis[0]" />
-            <app-mitigation-gauge [mitigation]="d.mitigation" />
-            <app-environment-card [environment]="d.environment" />
-            <app-alerts-card [alerts]="d.alerts" />
-          </div>
-        </div>
-
-        <app-footer [client]="d.plant.client" />
-      </main>
-    } @else if (loading()) {
-      <div class="loading">Cargando panel operativo…</div>
-    }
-  </div>
-
-  @if (toast.message(); as msg) {
-    <div class="toast">{{ msg }}</div>
-  }
-</div>
+    <app-footer [client]="d.plant.client" />
+  </main>
+} @else if (state.loading()) {
+  <div class="loading">Cargando panel operativo…</div>
+}

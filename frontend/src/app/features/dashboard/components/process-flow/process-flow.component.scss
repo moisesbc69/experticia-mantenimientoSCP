@@ -31,6 +31,39 @@
   }
 }
 
+.layers-wrap {
+  position: relative;
+}
+
+.layers-panel {
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+  z-index: 20;
+  background: var(--bg-panel-alt);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.5);
+  padding: var(--space-3);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 200px;
+
+  label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    color: var(--text-primary);
+    cursor: pointer;
+
+    input {
+      accent-color: var(--accent-blue);
+    }
+  }
+}
+
 .ghost-btn {
   display: inline-flex;
   align-items: center;
@@ -45,6 +78,11 @@
   &:hover {
     color: var(--text-primary);
     border-color: var(--border-strong);
+  }
+
+  &.active {
+    color: var(--accent-blue);
+    border-color: var(--accent-blue);
   }
 }
 
@@ -95,7 +133,10 @@
   flex: 1;
   min-width: 88px;
   padding-bottom: 4px;
-  cursor: default;
+
+  &.clickable {
+    cursor: pointer;
+  }
 
   &:hover .node-icon {
     border-color: var(--accent-blue);
@@ -150,6 +191,14 @@
   border-radius: 50%;
   background: var(--status-green);
   box-shadow: 0 0 8px rgba(34, 197, 94, 0.8);
+
+  &.hidden-dot {
+    visibility: hidden;
+  }
+}
+
+.pm-badge-spacer {
+  height: 58px;
 }
 
 .node-icon {

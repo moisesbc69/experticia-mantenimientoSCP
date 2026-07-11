@@ -1,0 +1,52 @@
+<div class="page">
+  <div class="page-head">
+    <h1>Configuración</h1>
+    <span class="page-sub">Parámetros de la plataforma (nivel demo — no persisten en el backend)</span>
+  </div>
+
+  <div class="config-grid">
+    <section class="config-card">
+      <h2><lucide-icon name="globe" [size]="15" /> Cliente y presentación</h2>
+      <label class="field">
+        <span>Cliente / faena</span>
+        <input type="text" [ngModel]="clientName()" (ngModelChange)="clientName.set($event)" />
+        <small>En el backend se define con la variable de entorno <code>DEMO_CLIENT_NAME</code> antes de ejecutar el seed.</small>
+      </label>
+      <label class="field">
+        <span>Idioma</span>
+        <select [ngModel]="language()" (ngModelChange)="language.set($event)">
+          <option value="es">Español</option>
+          <option value="en">English (próximamente)</option>
+        </select>
+      </label>
+    </section>
+
+    <section class="config-card">
+      <h2><lucide-icon name="gauge" [size]="15" /> Umbrales</h2>
+      <label class="field">
+        <span>Semáforo verde desde (disponibilidad %)</span>
+        <input type="number" min="1" max="100" [ngModel]="greenThreshold()" (ngModelChange)="greenThreshold.set($event)" />
+        <small>Regla real: verde = 100 %, ámbar 1–99 %, rojo 0 %. La demo usa verde ≥ 85 para variedad visual.</small>
+      </label>
+      <label class="field">
+        <span>Alerta PM10 sobre (µg/m³N)</span>
+        <input type="number" min="0" [ngModel]="pm10AlertThreshold()" (ngModelChange)="pm10AlertThreshold.set($event)" />
+      </label>
+    </section>
+
+    <section class="config-card">
+      <h2><lucide-icon name="activity" [size]="15" /> Datos</h2>
+      <label class="field">
+        <span>Frecuencia de actualización (segundos)</span>
+        <input type="number" min="5" [ngModel]="refreshSeconds()" (ngModelChange)="refreshSeconds.set($event)" />
+        <small>La demo usa datos precargados (seed); en producción esta frecuencia aplicará al polling de sensores.</small>
+      </label>
+      <div class="field">
+        <span>Planta por defecto</span>
+        <div class="static-value">{{ state.plant()?.name ?? '—' }}</div>
+      </div>
+    </section>
+  </div>
+
+  <button class="save-btn" (click)="save()">Guardar cambios</button>
+</div>

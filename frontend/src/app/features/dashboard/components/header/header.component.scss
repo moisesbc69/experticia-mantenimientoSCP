@@ -211,24 +211,40 @@
 .client-logo {
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 6px 12px;
+  gap: 10px;
+  padding: 5px 14px;
   border: 1px solid var(--border);
   border-radius: var(--radius-sm);
   background: var(--bg-panel);
 
-  .client-dot {
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    background: #f97316;
+  // Wordmark del cliente (estilo BHP: minúsculas, naranja)
+  .bhp-mark {
+    font-size: 20px;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+    color: #e8541e;
+    line-height: 1;
+    text-transform: lowercase;
   }
 
-  .client-name {
-    font-size: 12px;
-    font-weight: 700;
-    letter-spacing: 0.02em;
-    white-space: nowrap;
+  .client-site {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.2;
+    border-left: 1px solid var(--border-strong);
+    padding-left: 10px;
+
+    .site-name {
+      font-size: 12px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .site-sub {
+      font-size: 9.5px;
+      color: var(--text-secondary);
+      white-space: nowrap;
+    }
   }
 }
 

@@ -3,21 +3,41 @@
 
   <nav class="nav">
     @for (item of items; track item.label) {
-      <button class="nav-item" [class.active]="item.active" (click)="onNavigate(item)">
-        <lucide-icon [name]="item.icon" [size]="16" />
-        <span class="nav-label">{{ item.label }}</span>
-        @if (item.badge && alertsTotal > 0) {
-          <span class="nav-badge">{{ alertsTotal }}</span>
-        }
-        @if (item.expandable) {
+      @if (item.route) {
+        <a class="nav-item" [routerLink]="item.route" routerLinkActive="active">
+          <lucide-icon [name]="item.icon" [size]="16" />
+          <span class="nav-label">{{ item.label }}</span>
+          @if (item.badge && state.alertsTotal() > 0) {
+            <span class="nav-badge">{{ state.alertsTotal() }}</span>
+          }
+        </a>
+      } @else {
+        <button class="nav-item" [class.open]="isExpanded(item)" (click)="toggle(item)">
+          <lucide-icon [name]="item.icon" [size]="16" />
+          <span class="nav-label">{{ item.label }}</span>
           <lucide-icon name="chevron-down" [size]="14" class="expand" />
+        </button>
+        @if (isExpanded(item)) {
+          <div class="subnav">
+            @for (child of item.children; track child.label) {
+              <a
+                class="subnav-item"
+                [routerLink]="child.route"
+                [queryParams]="child.queryParams ?? null"
+                routerLinkActive="active"
+                [routerLinkActiveOptions]="{ exact: false }"
+              >
+                {{ child.label }}
+              </a>
+            }
+          </div>
         }
-      </button>
+      }
     }
   </nav>
 
   <div class="section-title quick">VISTA RÁPIDA</div>
-  <button class="nav-item" (click)="onNavigate({ icon: '', label: 'Flujo del proceso' })">
+  <button class="nav-item" (click)="goFlujo()">
     <lucide-icon name="workflow" [size]="16" />
     <span class="nav-label">Flujo del proceso</span>
   </button>

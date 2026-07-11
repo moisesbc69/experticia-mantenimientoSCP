@@ -1,0 +1,63 @@
+<div class="page">
+  <div class="page-head">
+    <h1>Sistemas de supresión y colección</h1>
+    <span class="page-sub">{{ filtered().length }} de {{ state.data()?.systems?.length ?? 0 }} sistemas · {{ state.plant()?.name }}</span>
+  </div>
+
+  <div class="chip-row">
+    @for (kind of kinds; track kind.key) {
+      <button class="chip" [class.active]="kindFilter() === kind.key" (click)="setKind(kind.key)">
+        {{ kind.label }}<span class="chip-count">{{ countKind(kind.key) }}</span>
+      </button>
+    }
+    <span class="chip-divider"></span>
+    @for (st of states; track st.key) {
+      <button class="chip" [class.active]="stateFilter() === st.key" (click)="stateFilter.set(st.key)">
+        {{ st.label }}
+      </button>
+    }
+  </div>
+
+  <div class="table-panel">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Sistema</th>
+          <th>TAG</th>
+          <th>Área</th>
+          <th>Tipo</th>
+          <th>Boquillas op/inst</th>
+          <th>Disponibilidad</th>
+          <th>Utilización</th>
+          <th>Estado</th>
+          <th>Motivo detención</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (system of filtered(); track system.id) {
+          <tr (click)="open(system)">
+            <td class="strong">{{ system.name }}</td>
+            <td class="mono">{{ system.tag }}</td>
+            <td>{{ system.area }}</td>
+            <td>{{ system.kind_display }}</td>
+            <td>{{ system.nozzles_operative }} / {{ system.nozzles_installed }}</td>
+            <td class="strong" [style.color]="semColor(system.estado_semaforo)">{{ system.disponibilidad }}%</td>
+            <td>{{ system.utilizacion }}%</td>
+            <td>
+              <span class="state-chip" [style.color]="semColor(system.estado_semaforo)" [style.borderColor]="semColor(system.estado_semaforo)">
+                <span class="state-dot"></span>{{ semLabel(system.estado_semaforo) }}
+              </span>
+            </td>
+            <td class="dim">{{ system.stop_reason_display ?? '—' }}</td>
+          </tr>
+        } @empty {
+          <tr>
+            <td colspan="9" class="dim empty">Ningún sistema coincide con los filtros.</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+
+  <p class="sim-note">ⓘ Disponibilidad = boquillas operativas/instaladas · Utilización = en funcionamiento/instaladas. Clic en una fila para ver el detalle.</p>
+</div>
