@@ -204,6 +204,44 @@ class Alert(models.Model):
         return f'[{self.severity}] {self.message}'
 
 
+class WorkOrder(models.Model):
+    """Orden de trabajo diaria asociada a un sistema (mantenimiento en terreno).
+
+    Las OTs son parte del flujo real de mantenimiento de Experticia; los
+    registros de esta demo son representativos. Las fotos son metadatos del
+    registro fotográfico que el operario captura en terreno (en producción
+    provendrán de la app de terreno)."""
+
+    class Kind(models.TextChoices):
+        PREVENTIVA = 'preventiva', 'Preventiva'
+        CORRECTIVA = 'correctiva', 'Correctiva'
+        INSPECCION = 'inspeccion', 'Inspección'
+
+    class Status(models.TextChoices):
+        ABIERTA = 'abierta', 'Abierta'
+        EN_EJECUCION = 'en_ejecucion', 'En ejecución'
+        CERRADA = 'cerrada', 'Cerrada'
+
+    plant = models.ForeignKey(Plant, related_name='work_orders', on_delete=models.CASCADE)
+    system = models.ForeignKey(System, related_name='work_orders', on_delete=models.CASCADE)
+    number = models.CharField(max_length=30)
+    kind = models.CharField(max_length=15, choices=Kind.choices, default=Kind.PREVENTIVA)
+    status = models.CharField(max_length=15, choices=Status.choices, default=Status.ABIERTA)
+    technician = models.CharField(max_length=80)
+    scheduled_at = models.DateTimeField()
+    duration_hours = models.FloatField(default=0)
+    description = models.CharField(max_length=250)
+    tasks = models.JSONField(default=list, blank=True, help_text='Tareas realizadas / por realizar')
+    photos = models.JSONField(default=list, blank=True,
+                              help_text='Registro fotográfico del operario: [{label, taken_at}]')
+
+    class Meta:
+        ordering = ['scheduled_at']
+
+    def __str__(self):
+        return f'{self.number} · {self.system.name}'
+
+
 class EnvironmentReading(models.Model):
     """Condiciones ambientales — SIMULADO."""
     plant = models.OneToOneField(Plant, related_name='environment', on_delete=models.CASCADE)

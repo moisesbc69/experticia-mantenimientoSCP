@@ -5,7 +5,7 @@ import { LucideIcons } from '../../core/icons';
 import { ProcessPoint, SystemCard } from '../../core/models/dashboard.models';
 import { DashboardStateService } from '../../core/services/dashboard-state.service';
 import { DetailDrawerService } from '../../core/services/detail-drawer.service';
-import { PM10_LEVEL_COLORS, SEMAFORO_COLORS, pm10Level } from '../../core/semaforo';
+import { PM10_LEVEL_COLORS, SEMAFORO_COLORS, findSystemForPoint, pm10Level } from '../../core/semaforo';
 import { pointDrawer, systemDrawer } from '../../shared/drawer-builders';
 
 interface AreaGroup {
@@ -50,10 +50,7 @@ export class PlantaComponent {
   }
 
   openPoint(point: ProcessPoint): void {
-    const data = this.state.data();
-    const system = data?.systems.find(
-      (s) => s.name.toLowerCase().slice(0, 8) === point.name.toLowerCase().slice(0, 8),
-    );
+    const system = findSystemForPoint(point, this.state.data()?.systems ?? []);
     this.drawer.open(pointDrawer(point, system));
   }
 

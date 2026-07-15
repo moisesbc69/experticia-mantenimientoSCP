@@ -1,0 +1,188 @@
+<div class="page">
+  <div class="page-head">
+    <h1>Flujo del proceso — operación por punto</h1>
+    <span class="page-sub">{{ state.plant()?.name }} · selecciona un punto para ver su operación</span>
+  </div>
+
+  @if (state.data()) {
+    <!-- Mini-diagrama horizontal de contexto -->
+    <div class="minimap">
+      @for (point of points(); track point.id; let last = $last) {
+        <button class="mnode" [class.sel]="point.id === selected()?.id" (click)="select(point)">
+          <span class="mnum">{{ point.order.toString().padStart(2, '0') }}</span>
+          <span class="mpm" [style.color]="pmColor(point.pm10)">{{ point.pm10 }}<small> µg</small></span>
+          <span class="mname">{{ point.name }}</span>
+        </button>
+        @if (!last) {
+          <span class="marrow"></span>
+        }
+      }
+    </div>
+
+    <div class="layout">
+      <!-- Cadena vertical -->
+      <section class="panel rail">
+        <h2>Cadena del proceso</h2>
+        @for (point of points(); track point.id) {
+          <button class="step" [class.sel]="point.id === selected()?.id" (click)="select(point)">
+            <span class="stepnum">{{ point.order.toString().padStart(2, '0') }}</span>
+            <span class="stepbody">
+              <span class="stepname">{{ point.name }}</span>
+              <span class="stepsys">
+                @if (systemFor(point); as sys) {
+                  {{ sys.tag }} · {{ sys.kind_display }}
+                } @else {
+                  Sin sistema asociado
+                }
+              </span>
+            </span>
+            <span class="stepright">
+              <span class="pm" [style.color]="pmColor(point.pm10)">
+                {{ point.pm10 }} <small>µg/m³N</small>
+              </span>
+              @if (systemFor(point); as sys) {
+                <span class="dot" [style.background]="semColor(sys)"></span>
+              }
+            </span>
+          </button>
+        }
+      </section>
+
+      <!-- Detalle del punto seleccionado -->
+      @if (selected(); as point) {
+        <section class="panel detail">
+          <header class="dhead">
+            <div>
+              <h2>{{ point.order.toString().padStart(2, '0') }} · {{ point.name }}</h2>
+              <p class="meta">
+                Área {{ point.area }}
+                @if (system(); as sys) {
+                  · Sistema {{ sys.tag }} ({{ sys.kind_display }})
+                }
+                @if (point.has_sensor) {
+                  · Sensor en línea <span class="online">●</span>
+                }
+              </p>
+            </div>
+            @if (system(); as sys) {
+              <span class="chip" [style.color]="semColor(sys)" [style.borderColor]="semColor(sys)">
+                ● {{ semLabel(sys) }} · {{ sys.disponibilidad }}%
+              </span>
+            }
+          </header>
+
+          <div class="grid2">
+            <!-- Boquillas -->
+            <div class="card">
+              <h3>Boquillas del sistema</h3>
+              @if (system(); as sys) {
+                <div class="bqrow">
+                  <span>Instaladas <b>{{ sys.nozzles_installed }}</b></span>
+                  <span>Operativas <b [style.color]="semColor(sys)">{{ sys.nozzles_operative }}</b></span>
+                  <span>En funcionamiento <b>{{ sys.nozzles_running }}</b></span>
+                </div>
+                <div class="bar">
+                  <span class="fill run" [style.width.%]="runningPct(sys)"></span>
+                  <span class="fill idle" [style.width.%]="idlePct(sys)"></span>
+                </div>
+                <div class="leg">
+                  <span><i class="run"></i>En funcionamiento</span>
+                  <span><i class="idle"></i>Operativas detenidas</span>
+                  <span><i class="off"></i>Fuera de servicio</span>
+                </div>
+                <p class="note">
+                  Disponibilidad {{ sys.disponibilidad }}% · Utilización {{ sys.utilizacion }}%
+                  @if (sys.stop_reason_display) {
+                    · <span class="warn">{{ sys.stop_reason_display }}</span>
+                  }
+                </p>
+              } @else {
+                <p class="empty">Este punto no tiene un sistema de supresión asociado (descarga directa).</p>
+              }
+            </div>
+
+            <!-- PM10 del punto -->
+            <div class="card">
+              <h3>Emisión PM10 del punto <span class="sim">(SIMULADO)</span></h3>
+              <div class="pmbig" [style.color]="pmColor(point.pm10)">
+                {{ point.pm10 }}
+                <small>µg/m³N @if (isHottest()) { · el más alto de la planta }</small>
+              </div>
+              <div class="thresh">
+                <span class="mark" [style.left.%]="pmMarkerPct(point.pm10)"></span>
+              </div>
+              <div class="thresh-leg">
+                <span>0</span>
+                <span>Umbral alerta {{ pmAlert }}</span>
+                <span>{{ pmScaleMax }}</span>
+              </div>
+            </div>
+
+            <!-- Métricas del sistema -->
+            @if (system(); as sys) {
+              @for (metric of sparkMetrics(sys); track metric.label) {
+                <div class="card">
+                  <h3>{{ metric.label === 'Presión' ? 'Presión de línea' : metric.label === 'Caudal' ? 'Caudal de agua' : metric.label }}</h3>
+                  <div class="mrow">
+                    <span class="mval">{{ metric.value }} <small>{{ metric.unit }}</small></span>
+                    <span class="mstate" [style.color]="semColor(sys)">
+                      {{ sys.estado_semaforo === 'verde' ? 'dentro de rango' : 'revisar' }}
+                    </span>
+                  </div>
+                  <div class="mspark">
+                    <app-sparkline [values]="metric.sparkline" [color]="semColor(sys)" />
+                  </div>
+                </div>
+              }
+            } @else {
+              <div class="card span2">
+                <h3>Métricas del sistema</h3>
+                <p class="empty">Sin telemetría: no hay sistema de supresión en este punto.</p>
+              </div>
+            }
+
+            <!-- OTs del sistema -->
+            <div class="card">
+              <h3>Órdenes de trabajo del sistema</h3>
+              @for (order of systemOrders(); track order.id) {
+                <button class="ot" (click)="openOrder(order)" title="Ver detalle y registro fotográfico">
+                  <span class="num">{{ order.number }}</span>
+                  <span class="k" [style.color]="woKindColor(order.kind)" [style.borderColor]="woKindColor(order.kind)">{{ order.kind_display }}</span>
+                  <span class="desc">{{ order.description }}</span>
+                  @if (order.photos.length) {
+                    <span class="cam"><lucide-icon name="eye" [size]="12" /> {{ order.photos.length }}</span>
+                  }
+                  <span class="k" [style.color]="woStatusColor(order.status)" [style.borderColor]="woStatusColor(order.status)">{{ order.status_display }}</span>
+                </button>
+              } @empty {
+                <p class="empty">Sin OTs del día para este sistema.</p>
+              }
+              @if (systemOrders().length) {
+                <p class="note">Clic en una OT para ver tareas y fotos · todas en Sistemas → Órdenes de trabajo</p>
+              }
+            </div>
+
+            <!-- Alertas del sistema -->
+            <div class="card">
+              <h3>Alertas del sistema</h3>
+              @for (alert of systemAlerts(); track alert.id) {
+                <div class="al">
+                  <i [style.background]="sevColor(alert.severity)"></i>
+                  <span class="al-msg">{{ alert.message }}</span>
+                  <span class="al-time">{{ alert.timestamp | date: 'HH:mm' }} h</span>
+                </div>
+              } @empty {
+                <p class="empty ok">✓ Sin alertas activas asociadas a este sistema.</p>
+              }
+              @if (systemAlerts().length) {
+                <p class="note">{{ systemAlerts().length }} alerta(s) activa(s) asociada(s)</p>
+              }
+            </div>
+          </div>
+        </section>
+      }
+    </div>
+  } @else {
+    <p class="sim-note">Cargando…</p>
+  }
+</div>

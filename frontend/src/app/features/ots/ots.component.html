@@ -1,0 +1,54 @@
+<div class="page">
+  <div class="page-head">
+    <h1>Órdenes de trabajo del día</h1>
+    <span class="page-sub">{{ orders().length }} OTs · {{ state.plant()?.name }} · mantenimiento de sistemas de supresión y colección</span>
+  </div>
+
+  <div class="chip-row">
+    @for (f of filters; track f.key) {
+      <button class="chip" [class.active]="filter() === f.key" (click)="filter.set(f.key)">
+        {{ f.label }}<span class="chip-count">{{ count(f.key) }}</span>
+      </button>
+    }
+  </div>
+
+  <div class="ot-list">
+    @for (order of filtered(); track order.id) {
+      <button class="ot-row" (click)="open(order)" title="Clic para ver el detalle y el registro fotográfico">
+        <span class="ot-status" [style.background]="statusColor(order.status)"></span>
+
+        <span class="ot-number">
+          <span class="num">{{ order.number }}</span>
+          <span class="time">{{ formatTime(order.scheduled_at) }}</span>
+        </span>
+
+        <span class="ot-main">
+          <span class="ot-desc">{{ order.description }}</span>
+          <span class="ot-meta">{{ order.system }} · <span class="mono">{{ order.system_tag }}</span></span>
+        </span>
+
+        <span class="state-chip kind" [style.color]="kindColor(order.kind)" [style.borderColor]="kindColor(order.kind)">
+          {{ order.kind_display }}
+        </span>
+
+        <span class="ot-tech">
+          <span class="tech-avatar">{{ order.technician.charAt(0) }}</span>
+          {{ order.technician }}
+        </span>
+
+        <span class="ot-photos" [class.none]="!order.photos.length">
+          <lucide-icon name="eye" [size]="13" />
+          {{ order.photos.length || '—' }}
+        </span>
+
+        <span class="state-chip" [style.color]="statusColor(order.status)" [style.borderColor]="statusColor(order.status)">
+          <span class="state-dot"></span>{{ order.status_display }}
+        </span>
+      </button>
+    } @empty {
+      <p class="sim-note">No hay órdenes de trabajo para este filtro.</p>
+    }
+  </div>
+
+  <p class="sim-note">ⓘ Clic en una OT para ver su detalle, tareas y el registro fotográfico del operario. Datos representativos (demo); en producción provendrán de la app de terreno.</p>
+</div>

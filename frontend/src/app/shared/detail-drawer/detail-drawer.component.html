@@ -43,6 +43,37 @@
       </div>
     }
 
+    @if (c.bullets; as bullets) {
+      <div class="bullets">
+        <h3>{{ bullets.title }}</h3>
+        <ul>
+          @for (item of bullets.items; track item) {
+            <li>{{ item }}</li>
+          }
+        </ul>
+      </div>
+    }
+
+    @if (c.photos?.length) {
+      <div class="photos">
+        <h3>Registro fotográfico del operario</h3>
+        <div class="photo-grid">
+          @for (photo of c.photos; track photo.label; let i = $index) {
+            <figure class="photo" [class]="'tone-' + (i % 4)">
+              <div class="photo-canvas">
+                <svg viewBox="0 0 24 24" class="cam" aria-hidden="true">
+                  <path d="M4 8h3l2-2.5h6L17 8h3a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" />
+                  <circle cx="12" cy="13.5" r="3.4" fill="none" stroke="currentColor" stroke-width="1.6" />
+                </svg>
+                <span class="stamp">{{ photo.takenAt | date: 'HH:mm' }} h</span>
+              </div>
+              <figcaption>{{ photo.label }}</figcaption>
+            </figure>
+          }
+        </div>
+      </div>
+    }
+
     @if (c.note) {
       <p class="note">ⓘ {{ c.note }}</p>
     }

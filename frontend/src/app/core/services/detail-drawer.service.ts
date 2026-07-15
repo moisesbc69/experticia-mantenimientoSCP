@@ -13,12 +13,24 @@ export interface DrawerSpark {
   suffix?: string;
 }
 
+export interface DrawerBullets {
+  title: string;
+  items: string[];
+}
+
+export interface DrawerPhoto {
+  label: string;
+  takenAt: string;
+}
+
 export interface DrawerContent {
   title: string;
   subtitle?: string;
   badge?: { text: string; color: string };
   rows: DrawerRow[];
   sparks?: DrawerSpark[];
+  bullets?: DrawerBullets;
+  photos?: DrawerPhoto[];
   note?: string;
 }
 

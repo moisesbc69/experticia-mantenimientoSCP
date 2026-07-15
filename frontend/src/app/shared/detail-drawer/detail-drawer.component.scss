@@ -130,6 +130,113 @@
   }
 }
 
+.bullets {
+  margin-top: var(--space-4);
+
+  h3 {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin-bottom: var(--space-2);
+  }
+
+  ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  li {
+    position: relative;
+    padding-left: 18px;
+    font-size: 12.5px;
+    line-height: 1.45;
+
+    &::before {
+      content: '✓';
+      position: absolute;
+      left: 0;
+      color: var(--status-green);
+      font-weight: 700;
+    }
+  }
+}
+
+.photos {
+  margin-top: var(--space-4);
+
+  h3 {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin-bottom: var(--space-2);
+  }
+}
+
+.photo-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-3);
+}
+
+.photo {
+  .photo-canvas {
+    position: relative;
+    aspect-ratio: 4 / 3;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border-strong);
+    display: grid;
+    place-items: center;
+    color: rgba(230, 237, 243, 0.4);
+    overflow: hidden;
+
+    .cam {
+      width: 30px;
+      height: 30px;
+    }
+
+    .stamp {
+      position: absolute;
+      right: 6px;
+      bottom: 5px;
+      font-size: 9px;
+      font-weight: 700;
+      font-family: ui-monospace, Menlo, monospace;
+      color: #ffb454;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
+    }
+  }
+
+  // Tonos distintos para que parezcan tomas diferentes
+  &.tone-0 .photo-canvas {
+    background: linear-gradient(135deg, #1d2733, #10151b 70%);
+  }
+
+  &.tone-1 .photo-canvas {
+    background: linear-gradient(160deg, #232a26, #12161a 70%);
+  }
+
+  &.tone-2 .photo-canvas {
+    background: linear-gradient(145deg, #2a2620, #14120f 70%);
+  }
+
+  &.tone-3 .photo-canvas {
+    background: linear-gradient(150deg, #202834, #0e1116 65%);
+  }
+
+  figcaption {
+    margin-top: 5px;
+    font-size: 10.5px;
+    color: var(--text-secondary);
+    line-height: 1.35;
+  }
+}
+
 .note {
   margin-top: var(--space-4);
   font-size: 11px;

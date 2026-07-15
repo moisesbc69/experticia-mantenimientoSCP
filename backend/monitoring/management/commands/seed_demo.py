@@ -156,6 +156,9 @@ class Command(BaseCommand):
             without_mitigation=1483, with_mitigation=1126,
         )
 
+        # --- Órdenes de trabajo del día ---
+        self._create_work_orders(plant, count=9, seed=13)
+
     # ------------------------------------------------------------------ #
     #  Plantas secundarias — variaciones coherentes                       #
     # ------------------------------------------------------------------ #
@@ -250,6 +253,7 @@ class Command(BaseCommand):
             plant=plant, reduction_pct=-delta_pct - 6,
             without_mitigation=avg_prev + 110, with_mitigation=avg_today,
         )
+        self._create_work_orders(plant, count=6, seed=seed + 3)
 
     # ------------------------------------------------------------------ #
     #  Helpers                                                            #
@@ -301,6 +305,103 @@ class Command(BaseCommand):
             current=smooth_series(avg_today * 1.12, 15, jitter=0.14, seed=seed + 4, trend=-0.18),
             previous=smooth_series(avg_prev * 1.05, 15, jitter=0.10, seed=seed + 5),
         )
+
+    def _create_work_orders(self, plant, count, seed):
+        """OTs del día asociadas a los sistemas de la planta, con registro
+        fotográfico del operario (metadatos; las imágenes reales vendrán de
+        la app de terreno)."""
+        rnd = random.Random(seed)
+        systems = list(models.System.objects.filter(area__plant=plant))
+        if not systems:
+            return
+        today = timezone.localtime()
+        technicians = ['C. Rojas', 'M. Díaz', 'P. Soto', 'J. Fuentes', 'A. Cortés']
+        catalog = {
+            'preventiva': {
+                'desc': [
+                    'Mantención preventiva programada del sistema de supresión',
+                    'Limpieza y calibración de boquillas según pauta semanal',
+                    'Revisión general de circuito de agua y aspersión',
+                ],
+                'tasks': [
+                    'Inspección visual de boquillas y cañerías',
+                    'Limpieza de boquillas obstruidas',
+                    'Verificación de presión de línea (bar)',
+                    'Prueba de aspersión en vacío',
+                    'Registro fotográfico de estado final',
+                ],
+            },
+            'correctiva': {
+                'desc': [
+                    'Reparación de rotura de cañería en línea de supresión',
+                    'Reemplazo de boquillas fuera de servicio',
+                    'Corrección de baja presión en gabinete supresor',
+                ],
+                'tasks': [
+                    'Aislación y despresurización de la línea',
+                    'Reemplazo de tramo de cañería / boquilla dañada',
+                    'Prueba de estanqueidad y presión',
+                    'Puesta en servicio y verificación de aspersión',
+                    'Registro fotográfico antes / después',
+                ],
+            },
+            'inspeccion': {
+                'desc': [
+                    'Inspección de rutina y catastro de boquillas',
+                    'Inspección de ΔP y estado de mangas del filtro',
+                    'Levantamiento de estado de sistema en terreno',
+                ],
+                'tasks': [
+                    'Conteo de boquillas operativas / en funcionamiento',
+                    'Lectura de manómetros y flujómetros',
+                    'Verificación de accesos y condiciones del área',
+                    'Registro fotográfico del estado del sistema',
+                ],
+            },
+        }
+        photo_labels = {
+            'preventiva': ['Estado inicial del sistema', 'Boquillas tras limpieza',
+                           'Manómetro de presión', 'Aspersión en prueba'],
+            'correctiva': ['Falla detectada (antes)', 'Tramo reparado (después)',
+                           'Boquilla reemplazada', 'Prueba de estanqueidad'],
+            'inspeccion': ['Vista general del sistema', 'Detalle de boquillas',
+                           'Lectura de manómetro', 'Condición de cañerías'],
+        }
+        kinds = ['preventiva', 'correctiva', 'inspeccion']
+        for i in range(count):
+            kind = kinds[i % 3] if i < 3 else rnd.choice(kinds)
+            system = systems[i % len(systems)]
+            hour = 7 + i  # jornada desde las 07:00
+            scheduled = today.replace(hour=min(hour, 19), minute=rnd.choice([0, 15, 30]),
+                                      second=0, microsecond=0)
+            # Estado según la hora del día: mañana cerradas, mediodía en ejecución, tarde abiertas
+            if hour <= 10:
+                status = models.WorkOrder.Status.CERRADA
+            elif hour <= 13:
+                status = models.WorkOrder.Status.EN_EJECUCION
+            else:
+                status = models.WorkOrder.Status.ABIERTA
+            info = catalog[kind]
+            n_tasks = rnd.randrange(3, len(info['tasks']) + 1)
+            n_photos = 0 if status == models.WorkOrder.Status.ABIERTA else rnd.randrange(2, 5)
+            photos = [
+                {
+                    'label': photo_labels[kind][j % len(photo_labels[kind])],
+                    'taken_at': scheduled.replace(minute=(10 + j * 12) % 60).isoformat(),
+                }
+                for j in range(n_photos)
+            ]
+            models.WorkOrder.objects.create(
+                plant=plant, system=system,
+                number=f'OT-{today.strftime("%Y%m%d")}-{i + 1:02d}',
+                kind=kind, status=status,
+                technician=rnd.choice(technicians),
+                scheduled_at=scheduled,
+                duration_hours=round(0.5 + rnd.random() * 3, 1) if status != models.WorkOrder.Status.ABIERTA else 0,
+                description=rnd.choice(info['desc']),
+                tasks=info['tasks'][:n_tasks],
+                photos=photos,
+            )
 
     def _create_alerts(self, plant, counts, seed):
         rnd = random.Random(seed)

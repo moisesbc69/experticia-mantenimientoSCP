@@ -6,7 +6,7 @@ import { LucideIcons } from '../../core/icons';
 import { Pm10Range, ProcessPoint } from '../../core/models/dashboard.models';
 import { DashboardStateService } from '../../core/services/dashboard-state.service';
 import { DetailDrawerService } from '../../core/services/detail-drawer.service';
-import { PM10_LEVEL_COLORS, pm10Level } from '../../core/semaforo';
+import { PM10_LEVEL_COLORS, findSystemForPoint, pm10Level } from '../../core/semaforo';
 import { pointDrawer } from '../../shared/drawer-builders';
 
 @Component({
@@ -66,9 +66,7 @@ export class PolvoComponent {
   }
 
   open(point: ProcessPoint): void {
-    const system = this.state
-      .data()
-      ?.systems.find((s) => s.name.toLowerCase().slice(0, 8) === point.name.toLowerCase().slice(0, 8));
+    const system = findSystemForPoint(point, this.state.data()?.systems ?? []);
     this.drawer.open(pointDrawer(point, system));
   }
 }

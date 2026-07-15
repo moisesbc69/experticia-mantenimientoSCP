@@ -14,10 +14,20 @@ export const routes: Routes = [
     title: 'Planta · Experticia IIoT',
   },
   {
+    path: 'flujo',
+    loadComponent: () => import('./features/flujo/flujo.component').then((m) => m.FlujoComponent),
+    title: 'Flujo del proceso · Experticia IIoT',
+  },
+  {
     path: 'sistemas',
     loadComponent: () =>
       import('./features/sistemas/sistemas.component').then((m) => m.SistemasComponent),
     title: 'Sistemas · Experticia IIoT',
+  },
+  {
+    path: 'ots',
+    loadComponent: () => import('./features/ots/ots.component').then((m) => m.OtsComponent),
+    title: 'Órdenes de trabajo · Experticia IIoT',
   },
   {
     path: 'polvo',

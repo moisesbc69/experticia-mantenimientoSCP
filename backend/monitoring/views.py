@@ -48,4 +48,7 @@ def plant_dashboard(request, plant_id):
         },
         'environment': serializers.EnvironmentSerializer(environment).data if environment else None,
         'mitigation': serializers.MitigationSerializer(mitigation).data if mitigation else None,
+        'work_orders': serializers.WorkOrderSerializer(
+            plant.work_orders.select_related('system').all(), many=True
+        ).data,
     })

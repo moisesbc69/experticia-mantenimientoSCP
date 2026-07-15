@@ -39,17 +39,15 @@ export class SidebarComponent {
       label: 'Planta',
       children: [
         { label: 'Áreas y puntos', route: '/planta' },
-        { label: 'Flujo del proceso', route: '/resumen' },
+        { label: 'Flujo del proceso', route: '/flujo' },
       ],
     },
     {
       icon: 'settings',
       label: 'Sistemas',
       children: [
-        { label: 'Todos', route: '/sistemas' },
-        { label: 'Supresores', route: '/sistemas', queryParams: { tipo: 'supresor' } },
-        { label: 'Humectadores', route: '/sistemas', queryParams: { tipo: 'humectador' } },
-        { label: 'Filtros / colectores', route: '/sistemas', queryParams: { tipo: 'filtro' } },
+        { label: 'Vista general', route: '/sistemas' },
+        { label: 'Órdenes de trabajo', route: '/ots' },
       ],
     },
     { icon: 'cloud-fog', label: 'Polvo (PM)', route: '/polvo' },
@@ -79,6 +77,6 @@ export class SidebarComponent {
   }
 
   goFlujo(): void {
-    this.router.navigate(['/resumen'], { fragment: 'flujo' });
+    this.router.navigate(['/flujo']);
   }
 }

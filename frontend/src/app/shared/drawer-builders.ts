@@ -1,6 +1,58 @@
-import { ProcessPoint, SystemCard } from '../core/models/dashboard.models';
+import { ProcessPoint, SystemCard, WorkOrder } from '../core/models/dashboard.models';
 import { DrawerContent } from '../core/services/detail-drawer.service';
 import { PM10_LEVEL_COLORS, SEMAFORO_COLORS, SEMAFORO_LABELS, pm10Level } from '../core/semaforo';
+
+export const WO_STATUS_COLORS: Record<WorkOrder['status'], string> = {
+  abierta: '#8b949e',
+  en_ejecucion: '#3b82f6',
+  cerrada: '#22c55e',
+};
+
+export const WO_KIND_COLORS: Record<WorkOrder['kind'], string> = {
+  preventiva: '#38bdf8',
+  correctiva: '#f59e0b',
+  inspeccion: '#a78bfa',
+};
+
+function formatTime(iso: string): string {
+  const date = new Date(iso);
+  const pad = (n: number) => String(n).padStart(2, '0');
+  return `${pad(date.getHours())}:${pad(date.getMinutes())} h`;
+}
+
+/** Contenido del drawer para una orden de trabajo. */
+export function workOrderDrawer(order: WorkOrder): DrawerContent {
+  return {
+    title: order.number,
+    subtitle: order.description,
+    badge: { text: order.status_display, color: WO_STATUS_COLORS[order.status] },
+    rows: [
+      { label: 'Sistema', value: order.system },
+      { label: 'TAG', value: order.system_tag },
+      { label: 'Tipo de OT', value: order.kind_display, color: WO_KIND_COLORS[order.kind] },
+      { label: 'Técnico responsable', value: order.technician },
+      { label: 'Programada', value: formatTime(order.scheduled_at) },
+      ...(order.duration_hours
+        ? [{ label: 'Duración', value: `${order.duration_hours.toString().replace('.', ',')} h` }]
+        : []),
+      {
+        label: 'Registro fotográfico',
+        value: order.photos.length ? `${order.photos.length} fotos` : 'Pendiente',
+        color: order.photos.length ? '#22c55e' : '#8b949e',
+      },
+    ],
+    bullets: order.tasks.length
+      ? {
+          title: order.status === 'cerrada' ? 'Tareas realizadas' : 'Tareas de la pauta',
+          items: order.tasks,
+        }
+      : undefined,
+    photos: order.photos.map((p) => ({ label: p.label, takenAt: p.taken_at })),
+    note: order.photos.length
+      ? 'Fotos de referencia (demo). En producción se mostrará el registro fotográfico capturado por el operario desde la app de terreno.'
+      : 'OT aún sin registro fotográfico: se captura al ejecutar el trabajo en terreno.',
+  };
+}
 
 /** Contenido del drawer para un punto de proceso (con su sistema asociado). */
 export function pointDrawer(point: ProcessPoint, system?: SystemCard): DrawerContent {

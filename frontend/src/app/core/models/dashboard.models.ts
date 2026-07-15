@@ -105,6 +105,29 @@ export interface MitigationImpact {
   simulated: boolean;
 }
 
+export interface WorkOrderPhoto {
+  label: string;
+  taken_at: string;
+}
+
+export interface WorkOrder {
+  id: number;
+  number: string;
+  kind: 'preventiva' | 'correctiva' | 'inspeccion';
+  kind_display: string;
+  status: 'abierta' | 'en_ejecucion' | 'cerrada';
+  status_display: string;
+  system: string;
+  system_id: number;
+  system_tag: string;
+  technician: string;
+  scheduled_at: string;
+  duration_hours: number;
+  description: string;
+  tasks: string[];
+  photos: WorkOrderPhoto[];
+}
+
 export interface DashboardPayload {
   plant: Plant;
   kpis: Kpi[];
@@ -114,4 +137,5 @@ export interface DashboardPayload {
   alerts: AlertsBlock;
   environment: EnvironmentReading | null;
   mitigation: MitigationImpact | null;
+  work_orders: WorkOrder[];
 }

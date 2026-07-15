@@ -5,7 +5,7 @@ import { LucideIcons } from '../../../../core/icons';
 import { ProcessPoint, SystemCard } from '../../../../core/models/dashboard.models';
 import { DetailDrawerService } from '../../../../core/services/detail-drawer.service';
 import { ToastService } from '../../../../core/services/toast.service';
-import { PM10_LEVEL_COLORS, SEMAFORO_COLORS, SEMAFORO_LABELS, pm10Level } from '../../../../core/semaforo';
+import { PM10_LEVEL_COLORS, SEMAFORO_COLORS, SEMAFORO_LABELS, findSystemForPoint, pm10Level } from '../../../../core/semaforo';
 
 @Component({
   selector: 'app-process-flow',
@@ -39,9 +39,7 @@ export class ProcessFlowComponent {
 
   /** Sistema asociado al punto (para detalle y tooltip). */
   systemFor(point: ProcessPoint): SystemCard | undefined {
-    return this.systems.find(
-      (s) => s.name.toLowerCase().slice(0, 8) === point.name.toLowerCase().slice(0, 8),
-    );
+    return findSystemForPoint(point, this.systems);
   }
 
   openPoint(point: ProcessPoint): void {

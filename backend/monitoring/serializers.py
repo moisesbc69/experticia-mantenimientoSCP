@@ -64,6 +64,20 @@ class AlertSerializer(serializers.ModelSerializer):
         fields = ['id', 'severity', 'severity_display', 'message', 'system', 'timestamp']
 
 
+class WorkOrderSerializer(serializers.ModelSerializer):
+    system = serializers.CharField(source='system.name', read_only=True)
+    system_id = serializers.IntegerField(read_only=True)
+    system_tag = serializers.CharField(source='system.tag', read_only=True)
+    kind_display = serializers.CharField(source='get_kind_display', read_only=True)
+    status_display = serializers.CharField(source='get_status_display', read_only=True)
+
+    class Meta:
+        model = models.WorkOrder
+        fields = ['id', 'number', 'kind', 'kind_display', 'status', 'status_display',
+                  'system', 'system_id', 'system_tag', 'technician', 'scheduled_at',
+                  'duration_hours', 'description', 'tasks', 'photos']
+
+
 class EnvironmentSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.EnvironmentReading
