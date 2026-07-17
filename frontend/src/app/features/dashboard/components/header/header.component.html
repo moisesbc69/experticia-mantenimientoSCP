@@ -1,4 +1,8 @@
 <header class="header">
+  <button class="hamburger" (click)="layout.toggleSidebar()" aria-label="Abrir menú">
+    <lucide-icon name="menu" [size]="22" />
+  </button>
+
   <div class="brand">
     <span class="brand-mark">E</span>
     <span class="brand-name">EXPERTICIA</span>
@@ -38,11 +42,11 @@
     <span class="label">Alertas</span>
   </button>
 
-  <button class="header-item" title="Tema" (click)="decorative()">
+  <button class="header-item theme" title="Tema" (click)="decorative()">
     <lucide-icon name="sun-medium" [size]="17" />
   </button>
 
-  <button class="header-item" (click)="decorative()">
+  <button class="header-item lang" (click)="decorative()">
     <lucide-icon name="globe" [size]="16" />
     <span class="label">ES</span>
   </button>

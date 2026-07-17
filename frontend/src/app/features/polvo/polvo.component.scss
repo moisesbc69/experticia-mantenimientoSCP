@@ -128,3 +128,30 @@
     white-space: nowrap;
   }
 }
+
+// Móvil: la etiqueta arriba, la barra a lo ancho y el valor a la derecha.
+@media (max-width: 640px) {
+  .bar-row {
+    grid-template-columns: 1fr auto;
+    grid-template-areas:
+      'label value'
+      'track track';
+    gap: 6px var(--space-3);
+
+    .bar-label {
+      grid-area: label;
+    }
+
+    .bar-value {
+      grid-area: value;
+    }
+
+    .bar-track {
+      grid-area: track;
+    }
+  }
+
+  .chart-wrap {
+    height: 240px;
+  }
+}

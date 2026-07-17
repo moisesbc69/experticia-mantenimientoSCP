@@ -5,6 +5,26 @@
   flex: 0 0 var(--sidebar-width);
 }
 
+// ---------- Móvil/tablet: menú lateral como cajón deslizable ----------
+@media (max-width: 1024px) {
+  :host {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: var(--sidebar-width);
+    z-index: 70;
+    transform: translateX(-100%);
+    transition: transform 0.22s ease;
+    overflow-y: auto;
+  }
+
+  :host(.open) {
+    transform: translateX(0);
+    box-shadow: 8px 0 32px rgba(0, 0, 0, 0.55);
+  }
+}
+
 .sidebar {
   display: flex;
   flex-direction: column;

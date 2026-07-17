@@ -17,6 +17,23 @@
   padding: 0 var(--space-5);
 }
 
+// Botón de menú (solo visible en móvil).
+.hamburger {
+  display: none;
+  place-items: center;
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  padding: 4px;
+  border-radius: var(--radius-sm);
+  flex-shrink: 0;
+
+  &:hover {
+    color: var(--text-primary);
+    background: var(--bg-hover);
+  }
+}
+
 .brand {
   display: flex;
   align-items: center;
@@ -288,5 +305,82 @@
   50% {
     opacity: 0.6;
     box-shadow: 0 0 0 4px rgba(34, 197, 94, 0);
+  }
+}
+
+// ============================================================
+// Móvil/tablet: header compacto. Se muestra la hamburguesa y se
+// ocultan los elementos secundarios para que quepa la barra.
+// ============================================================
+@media (max-width: 1024px) {
+  .header {
+    gap: var(--space-2);
+    padding: 0 var(--space-3);
+  }
+
+  .hamburger {
+    display: grid;
+  }
+
+  .brand .brand-name {
+    display: none;
+  }
+
+  // Selector de planta: puede encogerse y truncar el nombre.
+  .plant-selector {
+    min-width: 0;
+    flex: 1 1 auto;
+
+    .selector-btn {
+      width: 100%;
+      padding: 7px 10px;
+      gap: 7px;
+    }
+
+    .plant-name {
+      font-size: 13px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      min-width: 0;
+    }
+  }
+
+  .dropdown {
+    min-width: 0;
+    width: max-content;
+    max-width: calc(100vw - 32px);
+  }
+
+  // El spacer ya no hace falta empujar: el selector ocupa el espacio.
+  .spacer {
+    display: none;
+  }
+
+  // Elementos secundarios que no caben en un teléfono.
+  .header-item.theme,
+  .header-item.lang,
+  .user {
+    display: none;
+  }
+
+  .header-item.alerts .label {
+    display: none;
+  }
+
+  .subheader {
+    padding: 3px var(--space-3);
+  }
+}
+
+// Pantallas muy angostas: además ocultamos el subtítulo del logo del cliente.
+@media (max-width: 480px) {
+  .client-logo {
+    padding: 4px 9px;
+    gap: 7px;
+
+    .client-site .site-sub {
+      display: none;
+    }
   }
 }

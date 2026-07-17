@@ -18,6 +18,7 @@ import {
   Layers,
   LayoutDashboard,
   Map,
+  Menu,
   Search,
   Settings,
   SunMedium,
@@ -26,6 +27,7 @@ import {
   Truck,
   Wind,
   Workflow,
+  X,
 } from 'lucide-angular';
 
 // Módulo de iconos para los `imports` de componentes standalone.
@@ -52,6 +54,7 @@ export const provideLucideIcons = (): EnvironmentProviders =>
       Layers,
       LayoutDashboard,
       Map,
+      Menu,
       Search,
       Settings,
       SunMedium,
@@ -60,5 +63,6 @@ export const provideLucideIcons = (): EnvironmentProviders =>
       Truck,
       Wind,
       Workflow,
+      X,
     }),
   );

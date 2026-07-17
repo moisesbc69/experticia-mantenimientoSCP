@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { LucideIcons } from '../../../../core/icons';
 import { Plant } from '../../../../core/models/dashboard.models';
 import { DashboardStateService } from '../../../../core/services/dashboard-state.service';
+import { LayoutService } from '../../../../core/services/layout.service';
 import { ToastService } from '../../../../core/services/toast.service';
 
 const MONTHS_ES = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'];
@@ -18,6 +19,7 @@ const MONTHS_ES = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep'
 })
 export class HeaderComponent implements OnInit, OnDestroy {
   readonly state = inject(DashboardStateService);
+  readonly layout = inject(LayoutService);
   private toast = inject(ToastService);
   private router = inject(Router);
 

@@ -1,10 +1,12 @@
 import { Component, OnInit, inject } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
+import { filter } from 'rxjs/operators';
 
 import { HeaderComponent } from './features/dashboard/components/header/header.component';
 import { SidebarComponent } from './features/dashboard/components/sidebar/sidebar.component';
 import { DetailDrawerComponent } from './shared/detail-drawer/detail-drawer.component';
 import { DashboardStateService } from './core/services/dashboard-state.service';
+import { LayoutService } from './core/services/layout.service';
 import { ToastService } from './core/services/toast.service';
 
 @Component({
@@ -13,7 +15,10 @@ import { ToastService } from './core/services/toast.service';
   imports: [RouterOutlet, HeaderComponent, SidebarComponent, DetailDrawerComponent],
   template: `
     <div class="shell">
-      <app-sidebar />
+      <app-sidebar [class.open]="layout.sidebarOpen()" />
+      @if (layout.sidebarOpen()) {
+        <div class="nav-backdrop" (click)="layout.closeSidebar()"></div>
+      }
       <div class="main">
         <app-header />
         @if (state.error(); as err) {
@@ -32,8 +37,14 @@ import { ToastService } from './core/services/toast.service';
 export class AppComponent implements OnInit {
   readonly state = inject(DashboardStateService);
   readonly toast = inject(ToastService);
+  readonly layout = inject(LayoutService);
+  private router = inject(Router);
 
   ngOnInit(): void {
     this.state.init();
+    // Cerrar el menú lateral (móvil) al navegar a otra vista.
+    this.router.events
+      .pipe(filter((e) => e instanceof NavigationEnd))
+      .subscribe(() => this.layout.closeSidebar());
   }
 }

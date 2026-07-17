@@ -258,6 +258,7 @@
   border: 1px solid var(--border);
   border-radius: 10px;
   padding: var(--space-3) var(--space-4);
+  min-width: 0;
 
   &.span2 {
     grid-column: span 2;
@@ -469,6 +470,7 @@
 
   .desc {
     flex: 1;
+    min-width: 0;
     color: var(--text-secondary);
     white-space: nowrap;
     overflow: hidden;
@@ -520,15 +522,35 @@
 }
 
 @media (max-width: 1200px) {
+  // minmax(0, 1fr) permite que la columna encoja bajo el min-content de su
+  // contenido (gráficos), evitando que los paneles se desborden en móvil.
   .layout {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
   }
 
   .grid2 {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
   }
 
   .card.span2 {
     grid-column: auto;
+  }
+}
+
+@media (max-width: 720px) {
+  .detail {
+    padding: var(--space-4) var(--space-3);
+  }
+
+  .dhead {
+    flex-direction: column;
+
+    .chip {
+      align-self: flex-start;
+    }
+  }
+
+  .pmbig {
+    font-size: 22px;
   }
 }
