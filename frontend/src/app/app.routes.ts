@@ -19,6 +19,12 @@ export const routes: Routes = [
     title: 'Flujo del proceso · Experticia IIoT',
   },
   {
+    path: 'flujo-v2',
+    loadComponent: () =>
+      import('./features/flujo-scada/flujo-scada.component').then((m) => m.FlujoScadaComponent),
+    title: 'Flujo del proceso V2 · Experticia IIoT',
+  },
+  {
     path: 'sistemas',
     loadComponent: () =>
       import('./features/sistemas/sistemas.component').then((m) => m.SistemasComponent),

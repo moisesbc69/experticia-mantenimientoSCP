@@ -1,0 +1,222 @@
+@use 'tokens' as *;
+
+.scada-wrap {
+  @include panel;
+
+  padding: 6px;
+  overflow-x: auto;
+  background:
+    radial-gradient(ellipse 80% 60% at 50% 0%, rgba(59, 130, 246, 0.05), transparent 60%),
+    linear-gradient(180deg, #0c1219 0%, #0a0e13 100%);
+}
+
+.scada-svg {
+  display: block;
+  width: 100%;
+  min-width: 1080px;
+  height: auto;
+}
+
+// Zonas
+.zone {
+  rect {
+    fill: rgba(255, 255, 255, 0.012);
+    stroke: #3a4653;
+    stroke-width: 1.3;
+    stroke-dasharray: 5 5;
+  }
+
+  .zone-title {
+    fill: #b7c4d1;
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: 0.13em;
+  }
+}
+
+// Líneas del mímico
+.flow {
+  fill: none;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+
+  &.material {
+    stroke: #2dd4bf;
+    stroke-width: 2.3;
+    opacity: 0.78;
+  }
+
+  &.supply {
+    stroke: #e05a9c;
+    stroke-width: 2;
+    stroke-dasharray: 4 4;
+    opacity: 0.55;
+  }
+
+  &.duct {
+    stroke: #5b6675;
+    stroke-width: 2;
+    stroke-dasharray: 1 5;
+    opacity: 0.7;
+  }
+}
+
+.supply-label {
+  fill: #e05a9c;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  opacity: 0.85;
+  font-family: var(--font-sans);
+}
+
+// Tags de apoyo
+.support {
+  .support-label {
+    fill: #9fb0be;
+    font-size: 8px;
+    font-weight: 600;
+    font-family: var(--font-sans);
+  }
+}
+
+// Nodos principales
+.node {
+  cursor: pointer;
+
+  .sel-box {
+    fill: rgba(59, 130, 246, 0.08);
+    stroke: var(--accent-blue);
+    stroke-width: 1.4;
+  }
+
+  .stepnum-bg {
+    fill: var(--bg-panel-alt);
+    stroke: var(--accent-blue);
+    stroke-width: 1.5;
+  }
+
+  .stepnum {
+    fill: #cfe4ff;
+    font-size: 10px;
+    font-weight: 800;
+    font-family: var(--font-sans);
+  }
+
+  .halo {
+    opacity: 0.2;
+  }
+
+  .node-name {
+    fill: var(--text-primary);
+    font-size: 10.5px;
+    font-weight: 700;
+    font-family: var(--font-sans);
+  }
+
+  .node-sys {
+    fill: var(--text-secondary);
+    font-size: 8.5px;
+    font-family: var(--font-sans);
+  }
+
+  &:hover .node-name {
+    fill: #fff;
+  }
+
+  &:hover .glyph {
+    stroke: #b9c6d3;
+  }
+}
+
+.glyph {
+  fill: none;
+  stroke: #8291a0;
+  stroke-width: 1.6;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+  transition: stroke 0.15s ease;
+
+  circle {
+    fill: none;
+  }
+}
+
+.pm-rect {
+  fill: rgba(13, 17, 23, 0.75);
+  stroke-width: 1.3;
+}
+
+.pm-val {
+  font-size: 13px;
+  font-weight: 800;
+  font-family: var(--font-sans);
+}
+
+.pm-unit {
+  fill: var(--text-secondary);
+  font-size: 7.5px;
+  font-family: var(--font-sans);
+}
+
+// Leyenda
+.legend {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  flex-wrap: wrap;
+  font-size: 12px;
+  color: var(--text-secondary);
+
+  .leg {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+
+    i {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+
+    .line {
+      width: 22px;
+      height: 0;
+      border-top: 2.4px solid;
+
+      &.teal {
+        border-color: #2dd4bf;
+      }
+
+      &.pink {
+        border-top-style: dashed;
+        border-color: #e05a9c;
+      }
+
+      &.gray {
+        border-top-style: dotted;
+        border-color: #5b6675;
+      }
+    }
+  }
+
+  .leg-note {
+    margin-left: auto;
+    font-size: 11px;
+    color: var(--text-dim);
+  }
+}
+
+.loading {
+  padding: 60px;
+  text-align: center;
+  color: var(--text-secondary);
+}
+
+@media (max-width: 720px) {
+  .legend .leg-note {
+    margin-left: 0;
+    flex-basis: 100%;
+  }
+}

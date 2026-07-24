@@ -37,10 +37,14 @@
   </nav>
 
   <div class="section-title quick">VISTA RÁPIDA</div>
-  <button class="nav-item" (click)="goFlujo()">
+  <a class="nav-item" routerLink="/flujo" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
     <lucide-icon name="workflow" [size]="16" />
     <span class="nav-label">Flujo del proceso</span>
-  </button>
+  </a>
+  <a class="nav-item" routerLink="/flujo-v2" routerLinkActive="active">
+    <lucide-icon name="map" [size]="16" />
+    <span class="nav-label">Flujo del proceso V2</span>
+  </a>
 
   <div class="sidebar-footer">
     Plataforma IIoT Experticia<br>v2.1.0
