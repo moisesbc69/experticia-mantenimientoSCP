@@ -234,31 +234,33 @@
   border-radius: var(--radius-sm);
   background: var(--bg-panel);
 
-  // Wordmark del cliente (estilo BHP: minúsculas, naranja)
-  .bhp-mark {
-    font-size: 20px;
-    font-weight: 800;
-    letter-spacing: -0.01em;
-    color: #e8541e;
-    line-height: 1;
-    text-transform: lowercase;
+  // Ícono de la marca del cliente (cerro Antofagasta Minerals)
+  .amsa-mark {
+    width: 30px;
+    height: 23px;
+    flex-shrink: 0;
+    display: block;
   }
 
-  .client-site {
+  .client-name {
     display: flex;
     flex-direction: column;
-    line-height: 1.2;
+    line-height: 1.05;
     border-left: 1px solid var(--border-strong);
     padding-left: 10px;
 
-    .site-name {
-      font-size: 12px;
-      font-weight: 700;
+    .cn-1 {
+      font-size: 11.5px;
+      font-weight: 800;
+      letter-spacing: 0.02em;
+      color: var(--text-primary);
       white-space: nowrap;
     }
 
-    .site-sub {
-      font-size: 9.5px;
+    .cn-2 {
+      font-size: 11.5px;
+      font-weight: 800;
+      letter-spacing: 0.16em;
       color: var(--text-secondary);
       white-space: nowrap;
     }
@@ -373,13 +375,13 @@
   }
 }
 
-// Pantallas muy angostas: además ocultamos el subtítulo del logo del cliente.
+// Pantallas muy angostas: dejamos solo el ícono de la marca del cliente.
 @media (max-width: 480px) {
   .client-logo {
-    padding: 4px 9px;
-    gap: 7px;
+    padding: 4px 8px;
+    gap: 0;
 
-    .client-site .site-sub {
+    .client-name {
       display: none;
     }
   }

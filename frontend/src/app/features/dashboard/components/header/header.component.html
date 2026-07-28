@@ -60,11 +60,26 @@
     <lucide-icon name="chevron-down" [size]="14" class="icon-dim" />
   </div>
 
-  <div class="client-logo" [title]="state.plant()?.client">
-    <span class="bhp-mark">bhp</span>
-    <span class="client-site">
-      <span class="site-name">Spence</span>
-      <span class="site-sub">Pampa Norte</span>
+  <div class="client-logo" title="Antofagasta Minerals">
+    <svg class="amsa-mark" viewBox="0 0 54 42" aria-hidden="true">
+      <defs>
+        <linearGradient id="amsaGrad" x1="0%" y1="100%" x2="100%" y2="0%">
+          <stop offset="0%" stop-color="#5fb3c4" />
+          <stop offset="42%" stop-color="#9fd2d8" />
+          <stop offset="60%" stop-color="#f39200" />
+          <stop offset="100%" stop-color="#e2331a" />
+        </linearGradient>
+      </defs>
+      <!-- Cerro trasero (degradado teal → naranjo) -->
+      <path d="M27 2 L52 40 L41 40 L22 12 Z" fill="url(#amsaGrad)" />
+      <path d="M27 2 L22 12 L11 40 L2 40 Z" fill="#8bc7cf" />
+      <!-- Cerros frontales (tonos claros) -->
+      <path d="M13 40 L21 25 L29 40 Z" fill="#a9dbe1" />
+      <path d="M31 40 L39 25 L47 40 Z" fill="#c9e7eb" />
+    </svg>
+    <span class="client-name">
+      <span class="cn-1">ANTOFAGASTA</span>
+      <span class="cn-2">MINERALS</span>
     </span>
   </div>
 </header>
